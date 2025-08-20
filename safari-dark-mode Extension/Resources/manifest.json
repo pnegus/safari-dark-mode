@@ -14,16 +14,15 @@
         "512": "images/icon-512.png"
     },
     
-    "permissions": [
-        "scripting"
-    ],
+    "permissions": [],
     "host_permissions": [
             "<all_urls>"
     ],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "css": ["dark_styles.css"],
+            "css": ["styles.css"],
+            "js": ["content.js"],
             "run_at": "document_start"
         }
     ]
