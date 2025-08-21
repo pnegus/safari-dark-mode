@@ -5,8 +5,9 @@
 //  Created by Patrick Negus on 8/20/25.
 //
 
-function isColorLight(colorString) {
-    const rgb = colorString.match(/\d+/g);
+function isColorLight() {
+    const backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+    const rgb = backgroundColor.match(/\d+/g);
     if (!rgb) {
         return true;
     }
@@ -14,12 +15,42 @@ function isColorLight(colorString) {
     return luminance > 0.2;
 }
 
+function isAlreadyThemed() {
+    const rootElem = document.documentElement;
+    const darkThemeKeywords = ['dark', 'night', 'dim', 'theme-dark'];
+      const classNames = rootElem.className.toLowerCase();
+      if (darkThemeKeywords.some(keyword => classNames.includes(keyword))) {
+        return true;
+      }
+      const themeAttribute = (
+        rootElem.getAttribute('data-theme') ||
+        rootElem.getAttribute('data-bs-theme') ||
+        rootElem.getAttribute('data-color-mode') ||
+        ''
+      ).toLowerCase();
+      
+      if (darkThemeKeywords.some(keyword => themeAttribute.includes(keyword))) {
+        return true;
+      }
+
+      try {
+        const colorScheme = window.getComputedStyle(rootElem).colorScheme;
+        if (colorScheme.includes('dark')) {
+          return true;
+        }
+      } catch (e) {
+        return false;
+      }
+}
+
+/* preload a black overlay */
 document.documentElement.classList.add('sdm_dark_mode_preload');
 
+/* add listener on DOM load */
 window.addEventListener('DOMContentLoaded', (event) => {
-    const backgroundColor = window.getComputedStyle(document.body).backgroundColor;
-    if (isColorLight(backgroundColor)) {
+    if (isColorLight()) {
         document.documentElement.classList.add('sdm_dark_mode');
     }
+    /* cleanup preload overlay */
     document.documentElement.classList.remove('sdm_dark_mode_preload');
 });
