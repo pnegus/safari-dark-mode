@@ -1,10 +1,10 @@
-html.sdm_dark_mode {
+html.sdm_filter {
     filter: invert(1) hue-rotate(180deg) !important;
 }
 
-html.sdm_dark_mode img,
-html.sdm_dark_mode video,
-html.sdm_dark_mode iframe {
+html.sdm_filter img,
+html.sdm_filter video,
+html.sdm_filter iframe {
     filter: invert(1) hue-rotate(180deg) !important;
     transform: translateZ(0) !important;
 }

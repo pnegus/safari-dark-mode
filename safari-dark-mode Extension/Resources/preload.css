@@ -1,4 +1,4 @@
-html.sdm_dark_mode_preload::before {
+html.sdm_preload::before {
     content: '';
     position: fixed;
     top: 0;

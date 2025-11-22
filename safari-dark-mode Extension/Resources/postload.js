@@ -5,6 +5,25 @@
 //  Created by Patrick Negus on 8/20/25.
 //
 
+function hasDarkAttribute() {
+    const elements = [document.documentElement, document.body];
+    for (let el of elements) {
+        if (!el) continue;
+        if (typeof el.className === 'string' && el.className.toLowerCase().includes('dark')) {
+            return true;
+        }
+        for (let attr of el.attributes) {
+            if (attr.value.toLowerCase().includes('dark')) {
+                return true;
+            }
+            if (attr.name.toLowerCase().includes('dark')) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function isTextDark() {
     const titleElement = document.querySelector('h1') ||
                              document.querySelector('h2') ||
@@ -21,11 +40,17 @@ function isTextDark() {
 }
 
 setTimeout(() => {
-    if (isTextDark())
+    if (!hasDarkAttribute() && isTextDark())
     {
-        document.documentElement.classList.add('sdm_dark_mode');
+        document.documentElement.classList.add('sdm_filter');
     }
+    document.documentElement.classList.remove('sdm_preload');
+}, 50);
 
-    /* defined in preload.css and loaded by preload.js */
-    document.documentElement.classList.remove('sdm_dark_mode_preload');
-}, 75);
+//do one more check for slow loading sites
+setTimeout(() => {
+    if (hasDarkAttribute())
+    {
+        document.documentElement.classList.remove('sdm_filter');
+    }
+}, 1000);
