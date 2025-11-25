@@ -1,10 +1,16 @@
 html.sdm_filter {
+    background-color: white !important;
+    min-height: 100% !important;
+    height: 100% !important;
+    width: 100% !important;
     filter: invert(1) hue-rotate(180deg) !important;
 }
 
 html.sdm_filter img,
 html.sdm_filter video,
-html.sdm_filter iframe {
+html.sdm_filter iframe,
+html.sdm_filter svg,
+html.sdm_filter picture {
     filter: invert(1) hue-rotate(180deg) !important;
     transform: translateZ(0) !important;
 }

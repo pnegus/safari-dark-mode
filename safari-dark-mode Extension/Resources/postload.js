@@ -5,25 +5,6 @@
 //  Created by Patrick Negus on 8/20/25.
 //
 
-function hasDarkAttribute() {
-    const elements = [document.documentElement, document.body];
-    for (let el of elements) {
-        if (!el) continue;
-        if (typeof el.className === 'string' && el.className.toLowerCase().includes('dark')) {
-            return true;
-        }
-        for (let attr of el.attributes) {
-            if (attr.value.toLowerCase().includes('dark')) {
-                return true;
-            }
-            if (attr.name.toLowerCase().includes('dark')) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 function isAlreadyDarkTheme() {
     const rootComputedStyles = window.getComputedStyle(document.documentElement);
     try {
@@ -82,9 +63,10 @@ setTimeout(() => {
     document.documentElement.classList.remove('sdm_preload');
 }, 50);
 
+
 //do one more check for slow loading sites
 setTimeout(() => {
-    if (hasDarkAttribute() || isAlreadyDarkTheme())
+    if (isAlreadyDarkTheme())
     {
         document.documentElement.classList.remove('sdm_filter');
     }
