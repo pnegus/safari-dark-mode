@@ -22,6 +22,12 @@
             "css": ["postload.css"],
             "js": ["postload.js"],
             "run_at": "document_end"
+        },
+        {
+            "matches": ["<all_urls>"],
+            "css": ["postload.css"],
+            "js": ["disableautoplay.js"],
+            "run_at": "document_start"
         }
     ]
 }
