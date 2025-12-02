@@ -6,7 +6,12 @@ const codeToInject = `
     const originalPlay = HTMLMediaElement.prototype.play;
 
     HTMLMediaElement.prototype.play = function() {
-        const isUserInteraction = navigator.userActivation && navigator.userActivation.isActive;
+        const isUserInteraction = window.event && (
+                    window.event.type === 'click' || 
+                    window.event.type === 'keydown' ||
+                    window.event.type === 'mousedown' ||
+                    window.event.type === 'touchstart'
+                );
 
         if (isUserInteraction) {
             return originalPlay.apply(this, arguments);
