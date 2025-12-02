@@ -3,17 +3,30 @@ const codeToInject = `
     if (window.__autoplayBlocked) return;
     window.__autoplayBlocked = true;
 
+    let lastInteractionTime = 0;
+    const ALLOWED_DELAY_MS = 500; 
+
+    const interactionEvents = [
+        'click'
+    ];
+
+    const recordInteraction = (e) => {
+        if (e.isTrusted) {
+            lastInteractionTime = Date.now();
+        }
+    };
+
+    interactionEvents.forEach(eventType => {
+        window.addEventListener(eventType, recordInteraction, { capture: true, passive: true });
+    });
+
+
     const originalPlay = HTMLMediaElement.prototype.play;
 
     HTMLMediaElement.prototype.play = function() {
-        const isUserInteraction = window.event && (
-                    window.event.type === 'click' || 
-                    window.event.type === 'keydown' ||
-                    window.event.type === 'mousedown' ||
-                    window.event.type === 'touchstart'
-                );
-
-        if (isUserInteraction) {
+        const now = Date.now();
+        const timeSinceInteraction = now - lastInteractionTime;
+        if (timeSinceInteraction <= ALLOWED_DELAY_MS) {
             return originalPlay.apply(this, arguments);
         } else {
             console.warn('ShadowDOM Autoplay blocked by Safari Extension');
