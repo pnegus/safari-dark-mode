@@ -6,17 +6,7 @@ const codeToInject = `
     const originalPlay = HTMLMediaElement.prototype.play;
 
     HTMLMediaElement.prototype.play = function() {
-        const hasModernActivation = navigator.userActivation && navigator.userActivation.isActive;
-        const event = window.event;
-        const hasLegacyActivation = event && event.isTrusted && (
-            event.type === 'click' || 
-            event.type === 'keydown' || 
-            event.type === 'mousedown' || 
-            event.type === 'touchstart' ||
-            event.type === 'pointerdown'
-        );
-
-        const isUserInteraction = hasModernActivation || hasLegacyActivation;
+        const isUserInteraction = navigator.userActivation && navigator.userActivation.isActive;
 
         if (isUserInteraction) {
             return originalPlay.apply(this, arguments);

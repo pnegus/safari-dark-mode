@@ -6,21 +6,39 @@
 //
 
 function isAlreadyDarkTheme() {
-    const rootComputedStyles = window.getComputedStyle(document.documentElement);
-    try {
-        const colorScheme = rootComputedStyles.getPropertyValue('color-scheme');
-        if (colorScheme.includes('dark')) {
+    const elementsToCheck = [document.documentElement, document.body].filter(Boolean);
+    const darkClasses = ['dark', 'dark-mode', 'theme-dark', 'night'];
+    const darkAttributes = ['data-theme', 'data-mode', 'data-color-mode'];
+
+    for (const el of elementsToCheck) {
+        const style = window.getComputedStyle(el);
+        if (style.colorScheme === 'dark') return true;
+        if (darkClasses.some(cls => el.classList.contains(cls))) {
             return true;
         }
-    }
-    catch (e) {
-        return false;
+        for (const attr of darkAttributes) {
+            if (el.getAttribute(attr) === 'dark') {
+                return true;
+            }
+        }
     }
     return false;
 }
 
+function getFirstVisibleH2() {
+    const allH2s = document.querySelectorAll('h2');
+    for (const h2 of allH2s) {
+        if (h2.offsetParent === null) continue;
+        const style = window.getComputedStyle(h2);
+        if (style.visibility === 'hidden' || style.opacity === '0') continue;
+        return h2;
+    }
+    
+    return null;
+}
+
 function isH2Dark() {
-    const titleElement = document.querySelector('h2');
+    const titleElement = getFirstVisibleH2();
     if (!titleElement) return true;
     const style = window.getComputedStyle(titleElement);
     const color = style.color;
@@ -34,7 +52,7 @@ function isH2Dark() {
 
 function isTextDarkOG() {
     const rootComputedStyles = window.getComputedStyle(document.documentElement);
-    rgb = rootComputedStyles.getPropertyValue("color").match(/\d+/g);
+    const rgb = rootComputedStyles.getPropertyValue("color").match(/\d+/g);
     if (!rgb) {
         return true;
     }
@@ -70,4 +88,4 @@ setTimeout(() => {
     {
         document.documentElement.classList.remove('sdm_filter');
     }
-}, 1000);
+}, 500);
