@@ -47,7 +47,7 @@ function isH2Dark() {
         return true;
     }
     const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
-    return luminance < 0.35;
+    return luminance < 0.5;
 }
 
 function isTextDarkOG() {
