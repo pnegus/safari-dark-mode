@@ -83,5 +83,3 @@ fastlane/*.env
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
-
-*.pbxproj
